@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# Gravity Reader
 
-First, run the development server:
+A premium RSS reader with Read-It-Later functionality, built with Next.js, Tailwind CSS, Prisma, and Auth.js (Passkeys).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+- **RSS Aggregation**: Subscribe to any RSS, Atom, or JSON feed.
+- **Auto Detection**: Automatically finds feed URLs from homepage links.
+- **Read It Later**: Save articles to your personal inbox.
+- **Reader View**: Distraction-free reading experience using Mozilla Readability.
+- **Passkey Auth**: Secure, passwordless login with WebAuthn.
+- **Dark Mode**: Premium glassmorphism UI.
+
+## Local Development
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Setup Database (SQLite):
+   ```bash
+   npx prisma db push
+   ```
+
+3. Run the server:
+   ```bash
+   npm run dev
+   ```
+
+## Deployment (Vercel)
+
+This app is optimized for Vercel.
+
+### 1. Database
+You need a Postgres database (Vercel Postgres is free).
+Update `prisma/schema.prisma` before deploying:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Environment Variables
+Set these in your Vercel Project Settings:
+- `DATABASE_URL`: Your Postgres connection string.
+- `AUTH_SECRET`: Generate one with `npx auth secret`.
+- `NEXTAUTH_URL`: (Optional on Vercel) Your deployment URL.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Build Command
+Vercel should automatically detect Next.js.
+The build command `npm run build` will automatically run `prisma generate` (configured in `package.json`).
