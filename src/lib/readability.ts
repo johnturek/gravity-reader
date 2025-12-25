@@ -16,7 +16,7 @@ export async function parseArticleContent(url: string) {
         // Basic sanitization (optional in server context if just Text, but reasonable for HTML)
         const window = new JSDOM("").window
         const purify = DOMPurify(window)
-        const cleanHtml = purify.sanitize(article.content)
+        const cleanHtml = purify.sanitize(article.content || "")
 
         return {
             title: article.title,
